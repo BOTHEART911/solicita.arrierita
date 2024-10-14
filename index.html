@@ -71,7 +71,25 @@
       var longitud = document.getElementById('longitud').value;
       
       var mensaje = `SOLICITUD DE ARRIERITA\n\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
-      var url = `https://api.whatsapp.com/send?phone=573103230712&text=${encodeURIComponent(mensaje)}&location=${latitud},${longitud}`;
+      
+      // Enviar datos a WhatsApp
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:8080/chat/send/location", true);
+      xhr.setRequestHeader("Token", "www_atubot_net_pe");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          alert("Ubicación enviada correctamente.");
+        }
+      };
+      var data = JSON.stringify({
+        "Latitude": latitud,
+        "Longitude": longitud
+      });
+      xhr.send(data);
+      
+      // Enviar mensaje a WhatsApp
+      var url = `https://api.whatsapp.com/send?phone=573103230712&text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
     }
   </script>
