@@ -37,6 +37,7 @@
       background-color: #ccc;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/wuzapi@latest/dist/wuzapi.min.js"></script>
   <script>
     function validatePhoneNumber() {
       var phone = document.getElementById('telefono').value;
@@ -71,7 +72,7 @@
       var longitud = document.getElementById('longitud').value;
       
       var mensaje = `SOLICITUD DE ARRIERITA\n\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
-      var url = `https://api.whatsapp.com/send?phone=573103230712&text=${encodeURIComponent(mensaje)}`;
+      var url = `https://api.whatsapp.com/send?phone=573103230712&text=${encodeURIComponent(mensaje)}&location=${latitud},${longitud}`;
       window.open(url, '_blank');
     }
   </script>
@@ -106,5 +107,3 @@
   </form>
 </body>
 </html>
-
-
