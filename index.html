@@ -25,11 +25,6 @@
       box-sizing: border-box;
       margin-bottom: 10px;
     }
-    iframe {
-      width: 100%;
-      height: 300px;
-      border: 1px solid #ccc;
-    }
     button {
       padding: 10px 20px;
       font-size: 16px;
@@ -52,6 +47,19 @@
       return true;
     }
 
+    function seleccionarUbicacion() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          document.getElementById('latitud').value = position.coords.latitude;
+          document.getElementById('longitud').value = position.coords.longitude;
+        }, function() {
+          alert('Error al obtener la ubicación.');
+        });
+      } else {
+        alert('Geolocalización no es soportada por este navegador.');
+      }
+    }
+
     function enviarDatos() {
       if (!validatePhoneNumber()) {
         return;
@@ -59,9 +67,10 @@
       var nombre = document.getElementById('nombre').value;
       var telefono = document.getElementById('telefono').value;
       var direccion = document.getElementById('direccion').value;
-      var ubicacion = document.getElementById('ubicacion').value;
+      var latitud = document.getElementById('latitud').value;
+      var longitud = document.getElementById('longitud').value;
       
-      var mensaje = `SOLICITUD DE ARRIERITA\n\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nUbicación: ${ubicacion}`;
+      var mensaje = `SOLICITUD DE ARRIERITA\n\nNombre: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nLatitud: ${latitud}\nLongitud: ${longitud}`;
       var url = `https://api.whatsapp.com/send?phone=573103230712&text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
     }
@@ -83,13 +92,19 @@
       <input type="text" id="direccion" name="direccion" required>
     </div>
     <div class="form-group">
-      <label for="ubicacion">Ubicación:</label>
-      <input type="text" id="ubicacion" name="ubicacion" placeholder="Selecciona tu ubicación en el mapa" readonly>
+      <button type="button" onclick="seleccionarUbicacion()">Selecciona tu Ubicación</button>
     </div>
     <div class="form-group">
-      <iframe id="gmap_canvas" src="https://maps.google.com/maps?q=Colombia&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+      <label for="latitud">Latitud:</label>
+      <input type="text" id="latitud" name="latitud" readonly>
+    </div>
+    <div class="form-group">
+      <label for="longitud">Longitud:</label>
+      <input type="text" id="longitud" name="longitud" readonly>
     </div>
     <button type="submit">Enviar</button>
   </form>
 </body>
 </html>
+
+
